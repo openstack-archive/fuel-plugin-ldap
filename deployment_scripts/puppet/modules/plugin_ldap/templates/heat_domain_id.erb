@@ -1,0 +1,13 @@
+<% require "json" -%>
+<% require "uri" -%>
+<% require "net/http" -%>
+<% keystone_url = "http://" + @fuel_settings['management_vip'] +":35357/v3/domains" -%>
+<% uri = URI(keystone_url) -%>
+<% headers = { 'X-Auth-Token' => @fuel_settings['keystone']['admin_token'] } -%>
+<% httpcall = Net::HTTP.new(uri.host, uri.port) -%>
+<% resp, data = httpcall.get2(uri.path, headers) -%>
+<% data_hash = JSON.parse(data) -%>
+<% heat_hash = data_hash['domains'].select{|hash| hash["name"] == "heat"} -%>
+<% if ! heat_hash.empty? -%>
+<%= heat_hash[0]['id'] -%>
+<% end -%>

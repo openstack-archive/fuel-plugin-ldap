@@ -1,0 +1,17 @@
+#!/bin/bash
+KEYSTONE_URL="http://<%= @fuel_settings['management_vip'] %>:35357"
+
+TOKEN="<%= @fuel_settings['keystone']['admin_token'] %>"
+echo "geting role id"
+ROLE=$(keystone --os-token $TOKEN --os-endpoint ${KEYSTONE_URL}/v2.0/ role-list|awk '/admin/ {print $2}')
+echo "creating domain"
+RESP=$(curl -s -X POST ${KEYSTONE_URL}/v3/domains -H "User-Agent: python-keystoneclient" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -d \
+'{"domain": {"enabled": true, "name": "heat", "description": "Owns users and projects created by heat"}}')
+echo $RESP > /tmp/domain.json
+DOMAIN=$(echo $RESP|python -c 'import sys,json;data=json.loads(sys.stdin.read());print data["domain"]["id"]')
+DATA="{\"user\": {\"domain_id\": \"$DOMAIN\", \"password\": \"user4heat\", \"enabled\": true, \"name\": \"heat_domain_admin\", \"description\": \"Manages users and projects created by heat\"}}"
+echo "creating user in domain $DOMAIN"
+RESP=$(curl -s -X POST ${KEYSTONE_URL}/v3/users -H "User-Agent: python-keystoneclient" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -d "$DATA")
+USERID=$(echo $RESP|python -c 'import sys,json;data=json.loads(sys.stdin.read());print data["user"]["id"]')
+echo "assigning admin role to $USERID"
+RESP=$(curl -s -X PUT ${KEYSTONE_URL}/v3/domains/${DOMAIN}/users/${USERID}/roles/${ROLE} -H "User-Agent: python-keystoneclient" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN")
