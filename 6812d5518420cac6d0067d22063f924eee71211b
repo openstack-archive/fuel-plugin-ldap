@@ -1,0 +1,14 @@
+Verified+2: Jenkins
+Code-Review+1: Ivan Berezovskiy <iberezovskiy@mirantis.com>
+Code-Review+1: Denis Egorenko <degorenko@mirantis.com>
+Code-Review+1: Andrey Danin <gcon.monolake@gmail.com>
+Code-Review+1: Dmitry Ilyin <dilyin@mirantis.com>
+Code-Review+1: Alexander Makarov <amakarov@mirantis.com>
+Code-Review+1: Stephan Fabel <stephan.fabel@gmail.com>
+Code-Review+2: Vasyl Saienko <vsaienko@mirantis.com>
+Workflow+1: Vasyl Saienko <vsaienko@mirantis.com>
+Submitted-by: Jenkins
+Submitted-at: Thu, 17 Sep 2015 08:03:19 +0000
+Reviewed-on: https://review.openstack.org/205030
+Project: stackforge/fuel-plugin-ldap
+Branch: refs/heads/master
