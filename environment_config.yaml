@@ -1,16 +1,22 @@
 attributes:
   domain:
-    value: ''
+    value: 'example.com'
     label: 'LDAP domain'
     description: 'LDAP domain name'
     weight: 20
     type: "text"
+    regex:
+      source: '^[a-zA-Z0-9._-]+$'
+      error: "Domain do not match regex, e.g.: 'example.com' "
   url:
-    value: ''
+    value: 'ldap://example.com'
     label: 'LDAP URL'
     description: 'URL for connecting to the LDAP server.'
     weight: 25
     type: "text"
+    regex:
+      source: '^ldap:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
+      error: "LDAP URL do not match regex, e.g.: 'ldap://example.com'"
   suffix:
     value: 'cn=example,cn=com'
     label: 'LDAP Suffix'
@@ -24,11 +30,14 @@ attributes:
     weight: 30
     type: "text"
   password:
-    value: ''
+    value: 'changeMe'
     label: 'LDAP User Password'
     description: 'Password for the BindDN to query the LDAP server.'
     weight: 35
     type: "password"
+    regex:
+      source: '^[a-zA-Z0-9!@#$%&*+=?^_`{|}~\-()]+$'
+      error: "Password do not match regex, please use these characters a-zA-Z0-9!@#$%&*+=?^_`{|}~-()"
   query_scope:
     value: 'one'
     label: 'LDAP Query Scope'
