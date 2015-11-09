@@ -77,3 +77,15 @@ attributes:
     description: 'LDAP attribute mapped to enabled/disabled.'
     weight: 66
     type: "text"
+  use_tls:
+    value: 'true'
+    label: 'Use TLS'
+    description: 'Boolean to enable/disable TLS'
+    weight: 20
+    type: "text"
+  tls_req_cert:
+    value: 'allow'
+    label: 'TLS Require Cert'
+    description: 'Never/Demand/Allow Client Certificate Checks'
+    weight: 20
+    type: "text"
