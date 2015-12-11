@@ -1,13 +1,13 @@
 attributes:
   domain:
     value: ''
-    label: 'LDAP domain'
-    description: 'LDAP domain name'
+    label: 'Domain name'
+    description: 'Name of the Keystone domain'
     weight: 20
     type: "text"
     regex:
       source: '^[a-zA-Z0-9._-]+$'
-      error: "Domain do not match regex, e.g.: 'example.com' ."
+      error: "Domain name contains unexpected value. Must only contain letters, numbers and characters . / _ / -"
   url:
     value: ''
     label: 'LDAP URL'
@@ -15,8 +15,8 @@ attributes:
     weight: 25
     type: "text"
     regex:
-      source: '^ldap:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
-      error: "LDAP URL do not match regex, e.g.: 'ldap://example.com' ."
+      source: '^ldap[si]?:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
+      error: "LDAP URL is not valid. Should be e.g. 'ldap://example.com'."
   suffix:
     value: 'cn=example,cn=com'
     label: 'LDAP Suffix'
@@ -37,7 +37,7 @@ attributes:
     type: "password"
     regex:
       source: '^\S+$'
-      error: "Plesase remove spaces."
+      error: "Password must not contain spaces."
   query_scope:
     value: 'one'
     label: 'LDAP Query Scope'
