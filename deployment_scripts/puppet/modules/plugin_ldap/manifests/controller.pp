@@ -13,6 +13,7 @@ class plugin_ldap::controller {
 
   $identity_driver        = 'keystone.identity.backends.ldap.Identity'
   $url                    = $::fuel_settings['ldap']['url']
+  $use_tls                = $::fuel_settings['ldap']['use_tls']
   $suffix                 = $::fuel_settings['ldap']['suffix']
   $user                   = $::fuel_settings['ldap']['user']
   $password               = $::fuel_settings['ldap']['password']
@@ -49,6 +50,7 @@ class plugin_ldap::controller {
   keystone_config {
     "${domain}/identity/driver":        value  => $identity_driver;
     "${domain}/ldap/url":                    value => $url;
+    "${domain}/ldap/use_tls":                value => $use_tls;
     "${domain}/ldap/suffix":                 value => $suffix;
     "${domain}/ldap/user":                   value => $user;
     "${domain}/ldap/password":               value => $password;
