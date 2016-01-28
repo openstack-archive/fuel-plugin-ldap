@@ -86,3 +86,45 @@ attributes:
     description: 'LDAP attribute mapped to enabled/disabled.'
     weight: 66
     type: "text"
+  group_tree_dn:
+    value: 'ou=Groups,dc=example,dc=com'
+    label: 'Groups Tree DN'
+    description: 'Search base for groups.'
+    weight: 75
+    type: "text"
+  group_filter:
+    value: ''
+    label: 'Group Filter'
+    description: 'LDAP search filter for groups.'
+    weight: 80
+    type: "text"
+  group_objectclass:
+    value: 'groupOfNames'
+    label: 'Group Object Class'
+    description: 'LDAP objectclass for groups.'
+    weight: 85
+    type: "text"
+  group_id_attribute:
+    value: 'cn'
+    label: 'Group ID Attribute'
+    description: 'LDAP attribute mapped to group id.'
+    weight: 90
+    type: "text"
+  group_name_attribute:
+    value: 'ou'
+    label: 'Group Name Attribute'
+    description: 'LDAP attribute mapped to group name.'
+    weight: 95
+    type: "text"
+  group_member_attribute:
+    value: 'member'
+    label: 'Group Member Attribute'
+    description: 'LDAP attribute that maps user to group.'
+    weight: 100
+    type: "text"
+  group_desc_attribute:
+    value: 'description'
+    label: 'Group description Attribute'
+    description: 'LDAP attribute mapped to description.'
+    weight: 105
+    type: "text"
