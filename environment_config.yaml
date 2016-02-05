@@ -15,7 +15,7 @@ attributes:
     weight: 25
     type: "text"
     regex:
-      source: '^ldap:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
+      source: '^ldaps?:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
       error: "LDAP URL do not match regex, e.g.: 'ldap://example.com' ."
   suffix:
     value: 'cn=example,cn=com'
