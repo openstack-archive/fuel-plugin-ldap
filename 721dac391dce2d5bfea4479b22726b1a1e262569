@@ -1,0 +1,10 @@
+Code-Review+2: Ivan Berezovskiy <iberezovskiy@mirantis.com>
+Code-Review+1: Igor Kalnitsky <ikalnitsky@mirantis.com>
+Code-Review+1: Nikita Koshikov <nkoshikov@mirantis.com>
+Workflow+1: Dmitry Ilyin <dilyin@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 17 Feb 2016 16:06:02 +0000
+Reviewed-on: https://review.openstack.org/279412
+Project: openstack/fuel-plugin-ldap
+Branch: refs/heads/master
