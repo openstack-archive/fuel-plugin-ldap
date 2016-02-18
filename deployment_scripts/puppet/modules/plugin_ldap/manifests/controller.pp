@@ -41,6 +41,8 @@ class plugin_ldap::controller {
   $group_allow_update     = false
   $group_allow_delete     = false
 
+  $tls_on                 = $::fuel_settings['ldap']['tls_on']
+
   $domain                 = $::fuel_settings['ldap']['domain']
 
   file { '/etc/keystone/domains':
@@ -96,6 +98,13 @@ class plugin_ldap::controller {
   keystone_domain { "${domain}":
     ensure  => present,
     enabled => true,
+  }
+
+  if ($tls_on) {
+    keystone_config {
+       "${domain}/ldap/use_tls":                 value => 'true';
+       "${domain}/ldap/tls_req_cert":            value => 'never';
+    } ~> Service ['httpd']
   }
 
   file_line { 'OPENSTACK_KEYSTONE_URL':

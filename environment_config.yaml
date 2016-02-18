@@ -86,6 +86,12 @@ attributes:
     description: 'LDAP attribute mapped to enabled/disabled.'
     weight: 66
     type: "text"
+  tls_on:
+    value: false
+    label: 'Turn on TLS'
+    description: 'Turn on TLS encryption for LDAP connect'
+    weight: 67
+    type: "checkbox"
   group_tree_dn:
     value: 'ou=Groups,dc=example,dc=com'
     label: 'Groups Tree DN'
