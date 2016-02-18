@@ -29,6 +29,18 @@ class plugin_ldap::controller {
   $user_allow_update      = false
   $user_allow_delete      = false
 
+  $group_tree_dn          = $::fuel_settings['ldap']['group_tree_dn']
+  $group_filter           = $::fuel_settings['ldap']['group_filter']
+  $group_objectclass      = $::fuel_settings['ldap']['group_objectclass']
+  $group_id_attribute     = $::fuel_settings['ldap']['group_id_attribute']
+  $group_name_attribute   = $::fuel_settings['ldap']['group_name_attribute']
+  $group_member_attribute = $::fuel_settings['ldap']['group_member_attribute']
+  $group_desc_attribute   = $::fuel_settings['ldap']['group_desc_attribute']
+
+  $group_allow_create     = false
+  $group_allow_update     = false
+  $group_allow_delete     = false
+
   $domain                 = $::fuel_settings['ldap']['domain']
 
   file { '/etc/keystone/domains':
@@ -65,6 +77,16 @@ class plugin_ldap::controller {
     "${domain}/ldap/user_allow_create":      value => $user_allow_create;
     "${domain}/ldap/user_allow_update":      value => $user_allow_update;
     "${domain}/ldap/user_allow_delete":      value => $user_allow_delete;
+    "${domain}/ldap/group_tree_dn":          value => $group_tree_dn;
+    "${domain}/ldap/group_filter":           value => $group_filter;
+    "${domain}/ldap/group_objectclass":      value => $group_objectclass;
+    "${domain}/ldap/group_id_attribute":     value => $group_id_attribute;
+    "${domain}/ldap/group_name_attribute":   value => $group_name_attribute;
+    "${domain}/ldap/group_member_attribute": value => $group_member_attribute;
+    "${domain}/ldap/group_desc_attribute":   value => $group_desc_attribute;
+    "${domain}/ldap/group_allow_create":     value => $group_allow_create;
+    "${domain}/ldap/group_allow_update":     value => $group_allow_update;
+    "${domain}/ldap/group_allow_delete":     value => $group_allow_delete;
   } ~>
   service { 'httpd':
     name     => "$apache::params::service_name",
