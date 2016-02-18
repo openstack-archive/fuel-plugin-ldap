@@ -30,6 +30,22 @@ class plugin_ldap::controller {
   $user_allow_delete      = false
 
   $domain                 = $::fuel_settings['ldap']['domain']
+  $use_tls                = $::fuel_settings['ldap']['use_tls']
+
+  if $use_tls {
+    $ca_chain       = $::fuel_settings['ldap']['ca_chain']
+    $tls_cacertfile = '/usr/local/share/ca-certificates/cacert-ldap.crt'
+
+    file {'/usr/local/share/ca-certificates/cacert-ldap.crt':
+      ensure => file,
+      mode   => 0644,
+      content => $ca_chain,
+    }
+    ~>
+    exec { '/usr/sbin/update-ca-certificates': }
+  } else {
+    $tls_cacertfile = 'None'
+  }
 
   file { '/etc/keystone/domains':
     ensure => 'directory',
@@ -49,6 +65,8 @@ class plugin_ldap::controller {
   keystone_config {
     "${domain}/identity/driver":        value  => $identity_driver;
     "${domain}/ldap/url":                    value => $url;
+    "${domain}/ldap/use_tls":                value => $use_tls;
+    "${domain}/ldap/tls_cacertfile":         value => $tls_cacertfile;
     "${domain}/ldap/suffix":                 value => $suffix;
     "${domain}/ldap/user":                   value => $user;
     "${domain}/ldap/password":               value => $password;
@@ -94,3 +112,5 @@ class plugin_ldap::controller {
     match => "^# OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = .*$",
   } ~> Service ['httpd']
 }
+
+File <||> -> Keystone_config <||>

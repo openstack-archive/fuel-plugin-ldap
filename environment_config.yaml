@@ -17,6 +17,21 @@ attributes:
     regex:
       source: '^ldap:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
       error: "LDAP URL do not match regex, e.g.: 'ldap://example.com' ."
+  use_tls:
+    value: false
+    label: "Use TLS"
+    description: "Enable TLS for communicating with the LDAP server."
+    weight: 26
+    type: "checkbox"
+  ca_chain:
+    type: "textarea"
+    weight: 27
+    value: ''
+    label: "CA Chain"
+    description: "CA trust chain in PEM format."
+    restrictions:
+      - condition: 'settings:ldap.use_tls.value == false'
+        action: "disable"
   suffix:
     value: 'cn=example,cn=com'
     label: 'LDAP Suffix'
