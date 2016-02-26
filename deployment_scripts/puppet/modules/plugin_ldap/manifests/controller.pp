@@ -71,6 +71,16 @@ class plugin_ldap::controller {
     mode   => '755',
   }
 
+  file { "/etc/keystone/domains/keystone.${domain}.conf":
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '644',
+    require => File['/etc/keystone/domains'],
+     }
+
+  File["/etc/keystone/domains/keystone.${domain}.conf"] -> Keystone_config <||>
+
   keystone_config {
     "identity/domain_specific_drivers_enabled": value => 'True';
   }
