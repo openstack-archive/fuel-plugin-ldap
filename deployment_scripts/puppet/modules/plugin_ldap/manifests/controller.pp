@@ -61,6 +61,14 @@ class plugin_ldap::controller {
       }
       ~>
       exec { '/usr/sbin/update-ca-certificates': }
+      keystone_config {
+        "${domain}/ldap/tls_reqcert":        value  => 'demand';
+      }
+    }
+    else {
+      keystone_config {
+        "${domain}/ldap/tls_reqcert":        value  => 'never';
+      }
     }
   }
 
