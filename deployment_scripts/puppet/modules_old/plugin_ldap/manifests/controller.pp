@@ -45,6 +45,26 @@ class plugin_ldap::controller {
   $domain                 = $::fuel_settings['ldap']['domain']
   $use_tls                = $::fuel_settings['ldap']['use_tls']
 
+  if $use_tls {
+    $ca_chain       = pick($::fuel_settings['ldap']['ca_chain'], false)
+    $cacertfile     = '/usr/local/share/ca-certificates/cacert-ldap.crt'
+
+    $tls_cacertdir  = $ca_chain ? {
+      default => 'None',
+      true    => '/etc/ssl/certs',
+    }
+
+    if $ca_chain {
+      file { $cacertfile:
+        ensure  => file,
+        mode    => 0644,
+        content => $ca_chain,
+      }
+      ~>
+      exec { '/usr/sbin/update-ca-certificates': }
+    }
+  }
+
   file { '/etc/keystone/domains':
     ensure => 'directory',
     owner  => 'keystone',
@@ -61,7 +81,7 @@ class plugin_ldap::controller {
     identity_driver        => $identity_driver,
     url                    => $url,
     use_tls                => $use_tls,
-    ca_chain               => $ca_chain,
+    tls_cacertdir          => $tls_cacertdir,
     suffix                 => $suffix,
     user                   => $user,
     password               => $password,
