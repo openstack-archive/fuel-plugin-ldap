@@ -146,3 +146,9 @@ attributes:
     description: 'LDAP attribute mapped to description.'
     weight: 105
     type: "text"
+  additional_domains:
+    type: "textarea"
+    weight: 110
+    value: ''
+    label: "List of additional Domains"
+    description: "Blocks of additional domains/parameters that should be created"
