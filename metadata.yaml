@@ -1,15 +1,15 @@
 name: ldap
 title: LDAP plugin for Keystone
-version: '1.0.0'
+version: '2.0.0'
 description: Enable to use LDAP authentication backend for Keystone
-fuel_version: ['7.0']
+fuel_version: ['8.0']
 licenses: ['Apache License Version 2.0']
 authors: ['Mirantis']
 homepage: 'https://github.com/stackforge/fuel-plugin-ldap'
 groups: ['network']
 releases:
   - os: ubuntu
-    version: 2015.1-7.0
+    version: liberty-8.0
     mode: ['ha', 'multinode']
     deployment_scripts_path: deployment_scripts/
     repository_path: repositories/ubuntu
