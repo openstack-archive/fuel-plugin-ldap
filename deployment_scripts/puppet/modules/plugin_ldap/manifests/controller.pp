@@ -48,9 +48,11 @@ class plugin_ldap::controller {
     $ca_chain       = pick($::fuel_settings['ldap']['ca_chain'], false)
     $cacertfile     = '/usr/local/share/ca-certificates/cacert-ldap.crt'
 
-    $tls_cacertdir  = $ca_chain ? {
-      default => 'None',
-      true    => '/etc/ssl/certs',
+    if $ca_chain {
+      $tls_cacertdir = '/etc/ssl/certs'
+    }
+    else {
+      $tls_cacertdir = ''
     }
 
     if $ca_chain {
