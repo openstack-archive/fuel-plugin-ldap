@@ -54,7 +54,7 @@ attributes:
     weight: 35
     type: "password"
     regex:
-      source: '^\S+$'
+      source: '^\S*$'
       error: "Password must not contain spaces."
   query_scope:
     value: 'one'
