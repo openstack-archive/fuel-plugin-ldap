@@ -5,7 +5,7 @@ LDAP is a Fuel plugin that allows to use existing LDAP server
 as authentication backend for Keystone
 
 This repo contains all necessary files to build LDAP Fuel plugin.
-Supported Fuel version is 7.0.
+Supported Fuel version is 8.0.
 
 Building the plugin
 -------------------
