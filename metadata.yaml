@@ -5,7 +5,7 @@ description: Enable to use LDAP authentication backend for Keystone
 fuel_version: ['8.0']
 licenses: ['Apache License Version 2.0']
 authors: ['Mirantis']
-homepage: 'https://github.com/stackforge/fuel-plugin-ldap'
+homepage: 'https://github.com/openstack/fuel-plugin-ldap'
 groups: ['network']
 releases:
   - os: ubuntu
