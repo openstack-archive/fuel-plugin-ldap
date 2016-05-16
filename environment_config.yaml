@@ -59,9 +59,16 @@ attributes:
   query_scope:
     value: 'one'
     label: 'LDAP Query Scope'
-    description: 'The LDAP scope for queries, this can be either "one" (onelevel/singleLevel) or "sub" (subtree/wholeSubtree).'
+    description: 'The LDAP scope for queries.'
     weight: 40
-    type: "text"
+    type: "radio"
+    values:
+      - data: 'one'
+        label: 'one'
+        description: 'onelevel/singleLevel scope for LDAP queries'
+      - data: 'sub'
+        label: 'sub'
+        description: 'subtree/wholeSubtree scope for LDAP queries'
   user_tree_dn:
     value: 'ou=Users,dc=example,dc=com'
     label: 'Users Tree DN'
