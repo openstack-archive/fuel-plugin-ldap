@@ -41,18 +41,30 @@ attributes:
     description: 'LDAP server suffix.'
     weight: 26
     type: "text"
+  anonymous:
+    value: true
+    label: "Anonymous bind"
+    description: "Use anonymous bind to LDAP"
+    weight: 27
+    type: "checkbox"
   user:
     value: 'cn=admin,dc=local'
     label: 'LDAP User'
     description: 'User BindDN to query the LDAP server.'
     weight: 30
     type: "text"
+    restrictions:
+      - condition: 'settings:ldap.anonymous.value == true'
+        action: "disable"
   password:
     value: ''
     label: 'LDAP User Password'
     description: 'Password for the BindDN to query the LDAP server.'
     weight: 35
     type: "password"
+    restrictions:
+      - condition: 'settings:ldap.anonymous.value == true'
+        action: "disable"
     regex:
       source: '^\S+$'
       error: "Password must not contain spaces."
