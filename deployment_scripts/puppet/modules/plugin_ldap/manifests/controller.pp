@@ -14,6 +14,7 @@ class plugin_ldap::controller {
   $identity_driver        = 'keystone.identity.backends.ldap.Identity'
   $url                    = $::fuel_settings['ldap']['url']
   $suffix                 = $::fuel_settings['ldap']['suffix']
+  $anonymous              = $::fuel_settings['ldap']['anonymous']
   $user                   = $::fuel_settings['ldap']['user']
   $password               = $::fuel_settings['ldap']['password']
   $query_scope            = $::fuel_settings['ldap']['query_scope']
@@ -91,14 +92,18 @@ class plugin_ldap::controller {
     provider => 'ini_setting_domain',
   }
 
+  if !$anonymous {
+    keystone_config {
+      "${domain}/ldap/user":                 value => $user;
+      "${domain}/ldap/password":             value => $password;
+    } ~> Service['httpd']
+  }
   keystone_config {
-    "${domain}/identity/driver":        value  => $identity_driver;
+    "${domain}/identity/driver":             value  => $identity_driver;
     "${domain}/ldap/url":                    value => $url;
     "${domain}/ldap/use_tls":                value => $use_tls;
     "${domain}/ldap/tls_cacertdir":          value => $tls_cacertdir;
     "${domain}/ldap/suffix":                 value => $suffix;
-    "${domain}/ldap/user":                   value => $user;
-    "${domain}/ldap/password":               value => $password;
     "${domain}/ldap/query_scope":            value => $query_scope;
     "${domain}/ldap/user_tree_dn":           value => $user_tree_dn;
     "${domain}/ldap/user_filter":            value => $user_filter;
