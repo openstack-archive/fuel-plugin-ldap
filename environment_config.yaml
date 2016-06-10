@@ -35,6 +35,18 @@ attributes:
     regex:
       source: '^(-----BEGIN CERTIFICATE-----)(.*[\r\n])+(-----END CERTIFICATE-----[\s\S]*?)$|^$'
       error: "Please provide certificate in PEM format or leave this field empty"
+  ldap_proxy:
+    value: false
+    label: "LDAP proxy"
+    description: "Enable LDAP proxy."
+    weight: 26
+    type: "checkbox"
+  ldap_proxy_custom_conf:
+    type: "textarea"
+    weight: 110
+    value: ''
+    label: "List of custom LDAP proxy configs"
+    description: "List of custom LDAP proxy configs."
   suffix:
     value: 'cn=example,cn=com'
     label: 'LDAP Suffix'
