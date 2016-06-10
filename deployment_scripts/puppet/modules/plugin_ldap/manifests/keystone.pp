@@ -1,5 +1,5 @@
 define plugin_ldap::keystone (
-  $domain                 = undef,
+  $domain                 = $name,
   $identity_driver        = undef,
   $url                    = undef,
   $use_tls                = undef,
@@ -35,25 +35,16 @@ define plugin_ldap::keystone (
 ){
 
   if $use_tls {
-    $cacertfile = "/usr/local/share/ca-certificates/cacert-ldap-${domain}.crt"
 
+    plugin_ldap::tls { "${domain}_tls_certificate" :
+      domain_tls => $domain,
+      ca_chain   => $ca_chain,
+    }
     if $ca_chain {
       $tls_cacertdir = '/etc/ssl/certs'
     }
     else {
       $tls_cacertdir = ''
-    }
-
-    if $ca_chain {
-      file { $cacertfile:
-        ensure  => file,
-        mode    => 0644,
-        content => $ca_chain,
-      }
-      ~>
-      exec { "$domain" :
-        command => '/usr/sbin/update-ca-certificates'
-      }
     }
   }
 
@@ -61,7 +52,7 @@ define plugin_ldap::keystone (
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     require => File['/etc/keystone/domains'],
   }
 
