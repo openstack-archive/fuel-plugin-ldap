@@ -1,19 +1,47 @@
 define plugin_ldap::multiple_domain (
-  $domain_info     = $title,
-  $identity_driver = undef
+  $domain_info            = $title,
+  $identity_driver        = undef,
+  $ldap_proxy             = undef,
+  $management_vip         = undef,
+  $template_slapd_configs = undef,
+  $slapd_conf             = '/etc/ldap/slapd.conf',
+  $slapd_conf_template    = '/etc/fuel/plugins/ldap-3.0/puppet/modules/plugin_ldap/manifests/templates/slapd_conf.erb'
 ){
+
   $domain_params_hash = parse_it($domain_info)
+
+  $domain       = $domain_params_hash['domain']
+  $suffix       = $domain_params_hash['suffix']
+  $user_tree_dn = $domain_params_hash['user_tree_dn']
+  $user         = $domain_params_hash['user']
+  $password     = $domain_params_hash['password']
+  $ldap_url     = $domain_params_hash['url']
+
+  if $ldap_proxy {
+    $url = "ldap://${management_vip}"
+
+    if $domain in $template_slapd_configs { 
+      concat::fragment { "${domain}_fragment" :
+        target  => $slapd_conf,
+        content => template($slapd_conf_template)
+      }
+    }
+  }
+  else {
+    $url = $domain_params_hash['url']
+  }
+
   plugin_ldap::keystone { "$domain_params_hash['domain']" :
-    domain                 => $domain_params_hash['domain'],
+    domain                 => $domain,
     identity_driver        => $identity_driver,
-    url                    => $domain_params_hash['url'],
+    url                    => $url,
     use_tls                => $domain_params_hash['use_tls'],
     ca_chain               => $domain_params_hash['ca_chain'],
-    suffix                 => $domain_params_hash['suffix'],
-    user                   => $domain_params_hash['user'],
-    password               => $domain_params_hash['password'],
+    suffix                 => $suffix,
+    user                   => $user,
+    password               => $password,
     query_scope            => $domain_params_hash['query_scope'],
-    user_tree_dn           => $domain_params_hash['user_tree_dn'],
+    user_tree_dn           => $user_tree_dn,
     user_filter            => $domain_params_hash['user_filter'],
     user_objectclass       => $domain_params_hash['user_objectclass'],
     user_id_attribute      => $domain_params_hash['user_id_attribute'],
