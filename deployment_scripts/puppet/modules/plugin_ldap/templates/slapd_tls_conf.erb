@@ -1,0 +1,18 @@
+
+################################################
+#template config
+database ldap
+suffix "<%= @suffix %>"
+readonly yes
+protocol-version 3
+uri "<%= @ldap_url %>"
+rootdn "<%= @user_tree_dn %>"
+tls start
+idassert-bind   bindmethod=simple
+                binddn="<%= @user %>"
+                credentials="<%= @password %>"
+                mode=self
+                tls_reqcert=demand
+                starttls="yes"
+                tls_cacert=/etc/ssl/certs/
+idassert-authzFrom "*"
