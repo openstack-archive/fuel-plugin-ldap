@@ -1,0 +1,16 @@
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/nis.schema
+
+modulepath /usr/lib/ldap
+moduleload back_ldap
+
+pidfile /var/run/slapd/slapd.pid
+argsfile /var/run/slapd/slapd.args
+
+#rebind-as-user
+#loglevel 0
+loglevel -1
+
+#######################################################

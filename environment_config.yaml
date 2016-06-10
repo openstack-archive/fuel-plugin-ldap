@@ -17,15 +17,21 @@ attributes:
     regex:
       source: '^ldap[si]?:\/\/([a-zA-Z0-9._-]+)(:[0-9]+)?$'
       error: "LDAP URL is not valid. Should be e.g. 'ldap://example.com'."
+  ldap_proxy:
+    value: false
+    label: "LDAP proxy"
+    description: "Enable LDAP proxy."
+    weight: 26
+    type: "checkbox"
   use_tls:
     value: false
     label: "Use TLS"
     description: "Enable TLS for communicating with the LDAP server."
-    weight: 26
+    weight: 27
     type: "checkbox"
   ca_chain:
     type: "textarea"
-    weight: 27
+    weight: 28
     value: ''
     label: "CA Chain"
     description: "CA trust chain in PEM format."
@@ -39,7 +45,7 @@ attributes:
     value: 'cn=example,cn=com'
     label: 'LDAP Suffix'
     description: 'LDAP server suffix.'
-    weight: 26
+    weight: 29
     type: "text"
   user:
     value: 'cn=admin,dc=local'
@@ -176,4 +182,10 @@ attributes:
     weight: 120
     value: ''
     label: "List of additional Domains"
-    description: "Blocks of additional domains/parameters that should be created"
+    description: "Blocks of additional domains/parameters that should be created."
+  ldap_proxy_custom_conf:
+    type: "textarea"
+    weight: 115
+    value: ''
+    label: "List of custom LDAP proxy configs"
+    description: "List of custom LDAP proxy configs."
