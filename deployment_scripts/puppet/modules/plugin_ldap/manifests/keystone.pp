@@ -35,26 +35,11 @@ define plugin_ldap::keystone (
 ){
 
   if $use_tls {
-    $cacertfile = "/usr/local/share/ca-certificates/cacert-ldap-${domain}.crt"
 
-    if $ca_chain {
-      $tls_cacertdir = '/etc/ssl/certs'
-    }
-    else {
-      $tls_cacertdir = ''
-    }
-
-    if $ca_chain {
-      file { $cacertfile:
-        ensure  => file,
-        mode    => 0644,
-        content => $ca_chain,
+    plugin_ldap::tls { "${domain}_tls_certificate" :
+      domain =>   $domain,
+      ca_chain => $ca_chain,
       }
-      ~>
-      exec { "$domain" :
-        command => '/usr/sbin/update-ca-certificates'
-      }
-    }
   }
 
   file { "/etc/keystone/domains/keystone.${domain}.conf":
