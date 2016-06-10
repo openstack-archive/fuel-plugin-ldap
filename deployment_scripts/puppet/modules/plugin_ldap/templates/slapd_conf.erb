@@ -1,0 +1,14 @@
+
+################################################
+##template config
+database ldap
+suffix "<%= @suffix %>"
+readonly yes
+protocol-version 3
+uri "<%= @ldap_url %>"
+rootdn "<%= @user_tree_dn %>"
+idassert-bind   bindmethod=simple
+                binddn="<%= @user %>"
+                credentials="<%= @password %>"
+                mode=none
+idassert-authzFrom "*"

@@ -12,7 +12,7 @@ class plugin_ldap::controller {
   }
 
   $identity_driver        = 'keystone.identity.backends.ldap.Identity'
-  $url                    = $::fuel_settings['ldap']['url']
+  $ldap_url               = $::fuel_settings['ldap']['url']
   $suffix                 = $::fuel_settings['ldap']['suffix']
   $user                   = $::fuel_settings['ldap']['user']
   $password               = $::fuel_settings['ldap']['password']
@@ -25,6 +25,8 @@ class plugin_ldap::controller {
   $user_pass_attribute    = $::fuel_settings['ldap']['user_pass_attribute']
   $user_enabled_attribute = $::fuel_settings['ldap']['user_enabled_attribute']
   $additional_domains     = $::fuel_settings['ldap']['additional_domains']
+  $ldap_proxy_custom_conf = $::fuel_settings['ldap']['ldap_proxy_custom_conf']
+  $ldap_proxy             = $::fuel_settings['ldap']['ldap_proxy']
 
   $user_allow_create      = false
   $user_allow_update      = false
@@ -49,6 +51,35 @@ class plugin_ldap::controller {
   $use_tls                = $::fuel_settings['ldap']['use_tls']
   $ca_chain               = pick($::fuel_settings['ldap']['ca_chain'], false)
 
+
+#Install ldap_proxy and generate slapd.conf file
+  if $ldap_proxy {
+    $url = "ldap://${management_vip}"
+
+    $proxy_data = proxy_config_parser($additional_domains,$ldap_proxy_custom_conf,$domain)
+
+    class {'plugin_ldap::ldap_proxy_install':
+      custom_slapd_config   => $proxy_data[0],
+      template_slapd_config => $proxy_data[1],
+      domain_name           => $domain,
+      use_tls               => $use_tls,
+    }
+
+    if $use_tls {
+
+      plugin_ldap::tls { "${domain}_tls_certificate" :
+        domain_tls => $domain,
+        ca_chain   => $ca_chain,
+      } ~> Service['slapd']
+    }
+  $tls = false
+  }
+  else {
+    $url        = $::fuel_settings['ldap']['url']
+    $tls        = $use_tls
+    $proxy_data = []
+  }
+
   file { '/etc/keystone/domains':
     ensure => 'directory',
     owner  => 'keystone',
@@ -64,7 +95,7 @@ class plugin_ldap::controller {
     domain                 => $domain,
     identity_driver        => $identity_driver,
     url                    => $url,
-    use_tls                => $use_tls,
+    use_tls                => $tls,
     ca_chain               => $ca_chain,
     suffix                 => $suffix,
     user                   => $user,
@@ -96,37 +127,55 @@ class plugin_ldap::controller {
     chase_referrals        => $chase_referrals,
   }
 
-  Plugin_ldap::Keystone<||> ~>
-  service { 'httpd':
-    name   => "$apache::params::service_name",
-    ensure => running,
-  }
-
 #Create domains using info from text area 'List of additional Domains'
   if $additional_domains {
     $domains_list = split($additional_domains, '^$')
     plugin_ldap::multiple_domain { $domains_list:
-      identity_driver => $identity_driver,
+      identity_driver        => $identity_driver,
+      ldap_proxy             => $ldap_proxy,
+      management_vip         => $management_vip,
+      template_slapd_configs => $proxy_data[1],
     }
   }
+
+#Initialize ldap proxy
+  if $ldap_proxy {
+    class {'plugin_ldap::ldap_proxy_init':
+      internal_virtual_ip => $management_vip,
+  }
+
+    Class['plugin_ldap::ldap_proxy_install'] -> Plugin_ldap::Multiple_domain<||> -> Class['plugin_ldap::ldap_proxy_init']
+    Service['httpd'] -> Class['plugin_ldap::ldap_proxy_init']
+
+  }
+
+    Plugin_ldap::Keystone<||> ~>
+    service { 'httpd':
+      name   => "$apache::params::service_name",
+      ensure => running,
+    }
 
   file_line { 'OPENSTACK_KEYSTONE_URL':
     path  => '/etc/openstack-dashboard/local_settings.py',
     line  => "OPENSTACK_KEYSTONE_URL = \"http://${management_vip}:5000/v3/\"",
     match => "^OPENSTACK_KEYSTONE_URL = .*$",
+    tag   => 'ldap-horizon',
   }
 
   file_line { 'OPENSTACK_API_VERSIONS':
     path  => '/etc/openstack-dashboard/local_settings.py',
     line  => "OPENSTACK_API_VERSIONS = { \"identity\": 3 }",
     match => "^# OPENSTACK_API_VERSIONS = {.*$",
+    tag   => 'ldap-horizon',
   }
 
   file_line { 'OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT':
     path  => '/etc/openstack-dashboard/local_settings.py',
     line  => "OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True",
     match => "^# OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = .*$",
+    tag   => 'ldap-horizon',
   }
 
-  File_line<||> ~> Service ['httpd']
+  File_Line<| tag == 'ldap-horizon'|> ~> Service['httpd']
+
 }
