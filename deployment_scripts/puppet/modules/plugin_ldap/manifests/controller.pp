@@ -42,6 +42,9 @@ class plugin_ldap::controller {
   $group_allow_update     = false
   $group_allow_delete     = false
 
+  $chase_referrals        = $::fuel_settings['ldap']['chase_referrals']
+
+
   $domain                 = $::fuel_settings['ldap']['domain']
   $use_tls                = $::fuel_settings['ldap']['use_tls']
   $ca_chain               = pick($::fuel_settings['ldap']['ca_chain'], false)
@@ -89,6 +92,7 @@ class plugin_ldap::controller {
     group_allow_create     => $group_allow_create,
     group_allow_update     => $group_allow_update,
     group_allow_delete     => $group_allow_delete,
+    chase_referrals        => $chase_referrals,
   }
 
   Plugin_ldap::Keystone<||> ~>
