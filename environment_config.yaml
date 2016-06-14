@@ -153,9 +153,15 @@ attributes:
     description: 'LDAP attribute mapped to description.'
     weight: 105
     type: "text"
+  page_size:
+    value: '0'
+    label: 'Page Size Attribute'
+    description: 'Maximum results per page.'
+    weight: 110
+    type: "text"
   additional_domains:
     type: "textarea"
-    weight: 110
+    weight: 115
     value: ''
     label: "List of additional Domains"
     description: "Blocks of additional domains/parameters that should be created"
