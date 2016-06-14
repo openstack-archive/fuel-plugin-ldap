@@ -42,6 +42,8 @@ class plugin_ldap::controller {
   $group_allow_update     = false
   $group_allow_delete     = false
 
+  $page_size              = $::fuel_settings['ldap']['page_size']
+
   $domain                 = $::fuel_settings['ldap']['domain']
   $use_tls                = $::fuel_settings['ldap']['use_tls']
   $ca_chain               = pick($::fuel_settings['ldap']['ca_chain'], false)
@@ -89,6 +91,7 @@ class plugin_ldap::controller {
     group_allow_create     => $group_allow_create,
     group_allow_update     => $group_allow_update,
     group_allow_delete     => $group_allow_delete,
+    page_size              => $page_size,
   }
 
   Plugin_ldap::Keystone<||> ~>
