@@ -43,6 +43,7 @@ class plugin_ldap::controller {
   $group_allow_delete     = false
 
   $page_size              = $::fuel_settings['ldap']['page_size']
+  $chase_referrals        = pick($::fuel_settings['ldap']['chase_referrals'],'False')
 
   $domain                 = $::fuel_settings['ldap']['domain']
   $use_tls                = $::fuel_settings['ldap']['use_tls']
@@ -92,6 +93,7 @@ class plugin_ldap::controller {
     group_allow_update     => $group_allow_update,
     group_allow_delete     => $group_allow_delete,
     page_size              => $page_size,
+    chase_referrals        => $chase_referrals,
   }
 
   Plugin_ldap::Keystone<||> ~>

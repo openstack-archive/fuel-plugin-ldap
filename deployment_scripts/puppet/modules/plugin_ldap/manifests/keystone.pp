@@ -31,6 +31,7 @@ define plugin_ldap::keystone (
   $group_allow_update     = undef,
   $group_allow_delete     = undef,
   $page_size              = undef,
+  $chase_referrals        = undef,
 ){
 
   if $use_tls {
@@ -102,6 +103,7 @@ define plugin_ldap::keystone (
     "${domain}/ldap/group_allow_update":     value => $group_allow_update;
     "${domain}/ldap/group_allow_delete":     value => $group_allow_delete;
     "${domain}/ldap/page_size":              value => $page_size;
+    "${domain}/ldap/chase_referrals":        value => $chase_referrals;
   }
 
   keystone_domain { "${domain}":

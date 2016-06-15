@@ -36,6 +36,7 @@ define plugin_ldap::multiple_domain (
     group_allow_update     => $domain_params_hash['group_allow_update'],
     group_allow_delete     => $domain_params_hash['group_allow_delete'],
     page_size              => $domain_params_hash['page_size'],
+    chase_referrals        => $domain_params_hash['chase_referrals'],
   }
 
 }

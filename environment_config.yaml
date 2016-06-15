@@ -162,9 +162,18 @@ attributes:
     regex:
       source: '^[0-9]+$'
       error: "Page size contains unexpected value. It must contain only numbers."
+  chase_referrals:
+    value: 'False'
+    label: 'Chase referrals Attribute'
+    description: 'Referral chasing behavior for queries.'
+    weight: 115
+    type: "text"
+    regex:
+      source: '^[Ff]alse$|^[Tt]rue$'
+      error: "Chase referrals must contains boolean values: False or True."
   additional_domains:
     type: "textarea"
-    weight: 115
+    weight: 120
     value: ''
     label: "List of additional Domains"
     description: "Blocks of additional domains/parameters that should be created"
