@@ -19,7 +19,7 @@ define plugin_ldap::multiple_domain (
   $ldap_proxy_multidomain = $domain_params_hash['ldap_proxy']
   $ca_chain               = $domain_params_hash['ca_chain']
 
-  if $ldap_proxy_multidomain =~ /^[Tt]rue$/ {
+  if $ldap_proxy and $ldap_proxy_multidomain =~ /^[Tt]rue$/ {
     $url = "ldap://${management_vip}"
 
     if $domain in $slapd_config_template {
