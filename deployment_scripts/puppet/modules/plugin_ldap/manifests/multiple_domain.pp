@@ -28,6 +28,7 @@ define plugin_ldap::multiple_domain (
         concat::fragment { "${domain}_fragment" :
           target  => $slapd_conf,
           content => template('plugin_ldap/slapd_conf.erb'),
+          order   => '40',
         }
       }
       elsif $use_tls =~ /^[Tt]rue$/ {
@@ -35,6 +36,7 @@ define plugin_ldap::multiple_domain (
         concat::fragment { "${domain}_tls_fragment" :
           target  => $slapd_conf,
           content => template('plugin_ldap/slapd_tls_conf.erb'),
+          order   => '40',
         }
 
         plugin_ldap::tls { "${domain}_tls_certificate" :
