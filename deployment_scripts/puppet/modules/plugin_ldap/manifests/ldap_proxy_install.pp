@@ -32,7 +32,7 @@ class plugin_ldap::ldap_proxy_install (
   }
 
   if $base_config_label in $slapd_config_template {
-      concat::fragment { "base_fragment" :
+      concat::fragment { 'base_fragment' :
         target  => $slapd_config,
         content => template('plugin_ldap/slapd_base.erb'),
         order   => '10',
@@ -44,14 +44,14 @@ class plugin_ldap::ldap_proxy_install (
       concat::fragment { "${domain_name}_fragment" :
         target  => $slapd_config,
         content => template('plugin_ldap/slapd_conf.erb'),
-        order   => '20',
+        order   => '30',
       }
     }
     else {
       concat::fragment { "${domain_name}_tls_fragment" :
         target  => $slapd_config,
         content => template('plugin_ldap/slapd_tls_conf.erb'),
-        order   => '20',
+        order   => '30',
       }
     }
   }
@@ -60,7 +60,7 @@ class plugin_ldap::ldap_proxy_install (
     concat::fragment { 'ldap_proxy_init' :
       target  => $slapd_config,
       content => $slapd_custom_config,
-      order   => '30',
+      order   => '20',
     }
   }
 }
