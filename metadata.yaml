@@ -7,6 +7,7 @@ licenses: ['Apache License Version 2.0']
 authors: ['Mirantis']
 homepage: 'https://github.com/stackforge/fuel-plugin-ldap'
 groups: ['network']
+is_hotpluggable: false
 releases:
   - os: ubuntu
     version: mitaka-9.0
