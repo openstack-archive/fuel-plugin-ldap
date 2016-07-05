@@ -62,14 +62,17 @@ class plugin_ldap::ldap_proxy_init (
     internal_virtual_ip    => $internal_virtual_ip,
     ipaddresses            => $controller_ip,
     server_names           => $controller_nodes,
+    order                  => '180',
+    listen_port            => '389',
+    define_backups         => true,
     haproxy_config_options => {
-      mode   => 'tcp',
-      stats  => 'enable',
-      option => ['ldap-check',]
+      option         => ['tcplog','clitcpka','srvtcpka', 'ldap-check'],
+      balance        => 'leastconn',
+      mode           => 'tcp',
+      'timeout server' => '28801s',
+      'timeout client' => '28801s',
     },
-    balancermember_options => 'maxconn 10000 check',
-    order       => '180',
-    listen_port => '389',
-  } ~> Service<| title == 'haproxy' |>
+    balancermember_options => 'check inter 20s fastinter 2s downinter 2s rise 3 fall 3',
+    } ~> Service<| title == 'haproxy' |>
 
 }
