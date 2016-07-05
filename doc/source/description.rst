@@ -17,9 +17,8 @@ Requirements
 ================================== ===============
 Requirement                        Version/Comment
 ================================== ===============
-Fuel                               7.0
+Fuel                               9.0
 Pre-configured LDAP server
-MU (Maintenance Update)            3
 ================================== ===============
 
 LDAP server should be pre-deployed and be accessible via Public network
