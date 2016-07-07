@@ -10,7 +10,7 @@ Supported Fuel version is 7.0.
 Building the plugin
 -------------------
 
-1. Clone the LDAP plugin repo from `https://github.com/stackforge/fuel-plugin-ldap`.
+1. Clone the LDAP plugin repo from `https://github.com/openstack/fuel-plugin-ldap`.
 2. Install Fuel Plugin Builder:
 
     ``pip install fuel-plugin-builder``
