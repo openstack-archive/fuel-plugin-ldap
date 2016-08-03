@@ -1,0 +1,172 @@
+suffix: dc=openldap1,dc=tld
+url: ldap://176.74.221.80
+ca_chain: '-----BEGIN CERTIFICATE-----
+
+    MIIC3jCCAZagAwIBAgIEV78rsjANBgkqhkiG9w0BAQsFADATMREwDwYDVQQDEwht
+
+    aXJhbnRpczAeFw0xNjA4MjUxNzMyMzRaFw00NDAxMTAxNzMyMzRaMCsxETAPBgNV
+
+    BAoTCG1pcmFudGlzMRYwFAYDVQQDEw0xNzIuMTguMTgwLjc5MIGfMA0GCSqGSIb3
+
+    DQEBAQUAA4GNADCBiQKBgQDcTIcn/63x4RIvheWLKS3T8c4RYGGtsEcGdhAO+NEg
+
+    fzCvZ3LC9IFcwKWaBrxDffrN4ipBIE9+tBSlS+n/wCkb/0kKgYUngzBy0LHdAzyV
+
+    qVkIg4clzXAPL4dNf+9rIN5VKLjxBiIzM0elXv1LQWr97Y4rPCn7k5DXt4U15ea5
+
+    CwIDAQABo3YwdDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA8G
+
+    A1UdDwEB/wQFAwMHoAAwHQYDVR0OBBYEFCLl5iKnvOL1kQWLhqXh4+WfT3RSMB8G
+
+    A1UdIwQYMBaAFBwKLasELphBk6Z4D05Gw86ZiJRPMA0GCSqGSIb3DQEBCwUAA4IB
+
+    MQBPxb2nnHVaamEU5ND4ZpkTEzPSLWSjI6yz51vTHj+O3bcLC+NasUoaiZ/UA/6d
+
+    dqOhyNTYge6mmg5ZD9522Reaq40+enqzZtapiY53bYrti9q/lORKnKO5wULyo4qz
+
+    1IrWk8Fdm8CUiJNkOMddMcPI45H0SYcds8H46zPoOR0iQTL+6p9W+flRrXGPvDMz
+
+    OLceGS9QifPjr9LB02LpJ0OOH+DNd12/Y/s/JRwukwf8JVpvBlFR06qtsTDTinc7
+
+    Wgp2j3uyvZc15XF0D+0/0TvfLbo7qduibWUXFTClMaJtk1AhMrVd7KSi/P+m6Qv1
+
+    6Y2aIcudKZlSeqP+7o4d2xQ1TpqfOqj7TuDBofmCcM8IE+zLPDLLqegu0R6g4I7h
+
+    YEF4vbLrxFWwRdH9YyPnfI3+
+
+    -----END CERTIFICATE-----'
+chase_referrals: 'False'
+domain: openldap1
+group_desc_attribute: description
+group_filter: ''
+group_id_attribute: cn
+group_member_attribute: member
+group_name_attribute: cn
+group_objectclass: groupOfNames
+group_tree_dn: dc=openldap1,dc=tld
+ldap_proxy: true
+ldap_proxy_custom_conf: ''
+page_size: '0'
+password: '1111'
+query_scope: sub
+use_tls: true
+user: cn=admin,dc=openldap1,dc=tld
+user_enabled_attribute: enabled
+user_filter: ''
+user_id_attribute: cn
+user_name_attribute: sn
+user_objectclass: inetOrgPerson
+user_pass_attribute: userPassword
+user_tree_dn: dc=openldap1,dc=tld
+additional_domains: 'domain=openldap2
+
+    url=ldap://176.74.221.81
+
+    suffix=dc=openldap2,dc=tld
+
+    user=cn=admin,dc=openldap2,dc=tld
+
+    password=1111
+
+    query_scope=sub
+
+    user_tree_dn=dc=openldap2,dc=tld
+
+    user_objectclass=inetOrgPerson
+
+    user_id_attribute=cn
+
+    user_name_attribute=sn
+
+    user_pass_attribute=userPassword
+
+    user_enabled_attribute=enabled
+
+    user_allow_create=False
+
+    user_allow_update=False
+
+    user_allow_delete=False
+
+    user_filter=
+
+    group_tree_dn=dc=openldap2,dc=tld
+
+    group_objectclass=groupOfNames
+
+    group_id_attribute=cn
+
+    group_name_attribute=cn
+
+    group_desc_attribute=description
+
+    group_member_attribute=member
+
+    group_allow_create=False
+
+    group_allow_update=False
+
+    group_allow_delete=False
+
+    group_filter=
+
+    ldap_proxy=false
+
+    use_tls=False
+
+
+    domain=AD2
+
+    url=ldap://176.74.221.85
+
+    user=cn=admin,cn=Users,dc=keystone2,dc=tld
+
+    group_id_attribute=cn
+
+    group_objectclass=group
+
+    user_objectclass=person
+
+    user_name_attribute=cn
+
+    password=qwerty123!
+
+    user_allow_delete=False
+
+    group_allow_create=False
+
+    user_tree_dn=dc=keystone2,dc=tld
+
+    user_pass_attribute=userPassword
+
+    user_enabled_attribute=enabled
+
+    user_allow_create=False
+
+    user_allow_update=False
+
+    group_tree_dn=dc=keystone2,dc=tld
+
+    group_desc_attribute=description
+
+    user_filter=
+
+    group_allow_update=False
+
+    group_filter=
+
+    suffix=dc=keystone2,dc=tld
+
+    group_member_attribute=member
+
+    group_allow_delete=False
+
+    use_tls=False
+
+    query_scope=sub
+
+    group_name_attribute=cn
+
+    user_id_attribute=cn
+
+    ldap_proxy=true'

@@ -1,0 +1,158 @@
+template:
+  cluster_template:
+    name: ldap-plugin
+    network:
+      neutron-dvr: false
+      neutron-l2-pop: false
+      neutron-l3-ha: false
+      provider: neutron
+      pubip-to-all: false
+      segment-type: vlan
+    nodes:
+      - count: 1
+        roles: [controller]
+      - count: 1
+        roles: [compute, cinder]
+    release: ubuntu
+    settings:
+      components:
+        ceilometer: false
+        ironic: false
+        murano: false
+        sahara: false
+      storages:
+        ephemeral-ceph: false
+        image-ceph: false
+        rados-ceph: false
+        volume-ceph: false
+        volume-lvm: true
+  devops_settings:
+    address_pools:
+      baremetal-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 0}
+      fuelweb_admin-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 0}
+      management-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 0}
+      private-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 103}
+      public-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 0}
+      storage-pool01:
+        net: 10.109.0.0/16:24
+        params: {tag: 101}
+    aliases:
+      dynamic_address_pool:
+       - &pool_default !os_env POOL_DEFAULT, 10.109.0.0/16:24
+
+      rack-01-slave-interfaces: &rack-01-slave-interfaces
+       - label: eth0
+         l2_network_device: admin      # Libvirt bridge name. It is *NOT* Nailgun networks
+       - label: eth1
+         l2_network_device: public
+       - label: eth2
+         l2_network_device: management
+       - label: eth3
+         l2_network_device: private
+       - label: eth4
+         l2_network_device: storage
+       - label: eth5
+         l2_network_device: ironic
+
+      rack-01-slave-network_config: &rack-01-slave-network_config
+        eth0:
+          networks:
+           - fuelweb_admin
+        eth1:
+          networks:
+           - public
+        eth2:
+          networks:
+           - management
+        eth3:
+          networks:
+           - private
+        eth4:
+          networks:
+           - storage
+        eth5:
+          networks:
+           - baremetal
+
+      rack-01-controller-node-params: &controller-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 4096
+        network_config: *rack-01-slave-network_config
+        vcpu: 2
+        volumes:
+        - {capacity: 55, format: qcow2, name: system}
+        - {capacity: 55, format: qcow2, name: cinder}
+        - {capacity: 55, format: qcow2, name: swift}
+
+      rack-01-compute-node-params: &compute-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 4096
+        network_config: *rack-01-slave-network_config
+        vcpu: 2
+        volumes:
+        - {capacity: 55, format: qcow2, name: system}
+        - {capacity: 55, format: qcow2, name: cinder}
+        - {capacity: 55, format: qcow2, name: swift}
+
+    env_name: !os_env ENV_NAME
+    groups:
+    - driver:
+        name: devops.driver.libvirt.libvirt_driver
+        params: {connection_string: 'qemu:///system', hpet: false, storage_pool_name: default,
+          stp: true, use_host_cpu: true}
+      l2_network_devices:
+        admin:
+          address_pool: fuelweb_admin-pool01
+          dhcp: false
+          forward: {mode: nat}
+        ironic: {address_pool: baremetal-pool01, dhcp: false}
+        management: {address_pool: management-pool01, dhcp: false}
+        private: {address_pool: private-pool01, dhcp: false}
+        public:
+          address_pool: public-pool01
+          dhcp: false
+          forward: {mode: nat}
+        storage: {address_pool: storage-pool01, dhcp: false}
+      name: rack-01
+      network_pools: {baremetal: baremetal-pool01, fuelweb_admin: fuelweb_admin-pool01,
+        management: management-pool01, private: private-pool01, public: public-pool01,
+        storage: storage-pool01}
+      nodes:
+      - name: admin
+        params:
+          boot: [hd, cdrom]
+          interfaces:
+          - {l2_network_device: admin, label: eth0}
+          memory: 4096
+          network_config:
+            eth0:
+              networks: [fuelweb_admin]
+          vcpu: 1
+          volumes:
+          - {capacity: 80, format: qcow2, name: system}
+          - {bus: ide, device: cdrom, format: raw, name: iso, source_image: !os_env ISO_PATH}
+        role: fuel_master
+      - name: slave-01
+        params: *controller-node-params
+        role: fuel_slave
+      - name: slave-02
+        params: *compute-node-params
+        role: fuel_slave
+  name: 1 Controller, 1 Compute + Cinder, Neutron, VLAN
+  slaves: 2
+
+plugins:
+  - ldap:
+      config_file: !os_env LDAP_CONFIG_FILE, plugins_config/mld_proxy.yaml
