@@ -1,6 +1,10 @@
 Release notes / Changelog
 =========================
 
+**3.0.1**
+
+* Tasks version 2.0.0 is set by default [LP #1638617]
+
 **3.0.0**
 
 * Support of ldap proxy

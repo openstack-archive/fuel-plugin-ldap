@@ -5,7 +5,7 @@ Delete all environments, in which the LDAP plugin has been enabled.
 
 #. Uninstall the plugin::
 
-      # fuel plugins --remove ldap==3.0.0
+      # fuel plugins --remove ldap==3.0.1
 
 #. Check if the plugin was uninstalled successfully::
 
