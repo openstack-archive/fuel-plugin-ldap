@@ -11,8 +11,8 @@ master_doc = 'index'
 project = u'The LDAP plugin for Fuel'
 copyright = u'2016, Mirantis Inc.'
 
-version = '3.0-3.0.0-1'
-release = '3.0-3.0.0-1'
+version = '3.1-3.1.0-1'
+release = '3.1-3.1.0-1'
 
 exclude_patterns = []
 
