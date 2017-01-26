@@ -1,26 +1,48 @@
 define plugin_ldap::multiple_domain (
-  $domain_info             = $title,
-  $identity_driver         = undef,
-  $ldap_proxy              = undef,
-  $management_vip          = undef,
-  $slapd_config_template   = undef,
-  $slapd_conf              = '/etc/ldap/slapd.conf',
+  $domain                 = $title,
+  $identity_driver        = undef,
+  $url                    = undef,
+  $use_tls                = undef,
+  $ca_chain               = undef,
+  $suffix                 = undef,
+  $user                   = undef,
+  $password               = undef,
+  $query_scope            = undef,
+  $user_tree_dn           = undef,
+  $user_filter            = undef,
+  $user_objectclass       = undef,
+  $user_id_attribute      = undef,
+  $user_name_attribute    = undef,
+  $user_pass_attribute    = undef,
+  $user_enabled_attribute = undef,
+  $user_enabled_default   = undef,
+  $user_enabled_mask      = undef,
+  $user_allow_create      = undef,
+  $user_allow_update      = undef,
+  $user_allow_delete      = undef,
+  $group_tree_dn          = undef,
+  $group_filter           = undef,
+  $group_objectclass      = undef,
+  $group_id_attribute     = undef,
+  $group_name_attribute   = undef,
+  $group_member_attribute = undef,
+  $group_desc_attribute   = undef,
+  $group_allow_create     = undef,
+  $group_allow_update     = undef,
+  $group_allow_delete     = undef,
+  $page_size              = undef,
+  $chase_referrals        = undef,
+  $ldap_proxy             = undef,
+  $ldap_proxy_default     = undef,
+  $management_vip         = undef,
+  $slapd_config_template  = undef,
+  $slapd_conf             = '/etc/ldap/slapd.conf',
 ){
 
-  $domain_params_hash = parse_it($domain_info)
+  $ldap_url = $url
 
-  $domain                 = $domain_params_hash['domain']
-  $suffix                 = $domain_params_hash['suffix']
-  $user_tree_dn           = $domain_params_hash['user_tree_dn']
-  $user                   = $domain_params_hash['user']
-  $password               = $domain_params_hash['password']
-  $ldap_url               = $domain_params_hash['url']
-  $use_tls                = $domain_params_hash['use_tls']
-  $ldap_proxy_multidomain = $domain_params_hash['ldap_proxy']
-  $ca_chain               = $domain_params_hash['ca_chain']
-
-  if $ldap_proxy and $ldap_proxy_multidomain =~ /^[Tt]rue$/ {
-    $url = "ldap://${management_vip}"
+  if $ldap_proxy_default and $ldap_proxy =~ /^[Tt]rue$/ {
+    $url_real = "ldap://${management_vip}"
 
     if $domain in $slapd_config_template {
       if $use_tls =~ /^[Ff]alse$/ {
@@ -48,44 +70,44 @@ define plugin_ldap::multiple_domain (
     }
     $tls = false
   } else {
-    $url = $domain_params_hash['url']
+    $url_real = $url
     $tls = $use_tls ? { /^[Tt]rue$/ => true, default => false }
   }
 
-  plugin_ldap::keystone { "$domain_params_hash['domain']" :
+  plugin_ldap::keystone { $domain :
     domain                 => $domain,
     identity_driver        => $identity_driver,
-    url                    => $url,
+    url                    => $url_real,
     use_tls                => $tls,
     ca_chain               => $ca_chain,
     suffix                 => $suffix,
     user                   => $user,
     password               => $password,
-    query_scope            => $domain_params_hash['query_scope'],
+    query_scope            => $query_scope,
     user_tree_dn           => $user_tree_dn,
-    user_filter            => $domain_params_hash['user_filter'],
-    user_objectclass       => $domain_params_hash['user_objectclass'],
-    user_id_attribute      => $domain_params_hash['user_id_attribute'],
-    user_name_attribute    => $domain_params_hash['user_name_attribute'],
-    user_pass_attribute    => $domain_params_hash['user_pass_attribute'],
-    user_enabled_attribute => $domain_params_hash['user_enabled_attribute'],
-    user_enabled_default   => $domain_params_hash['user_enabled_default'],
-    user_enabled_mask      => $domain_params_hash['user_enabled_mask'],
-    user_allow_create      => $domain_params_hash['user_allow_create'],
-    user_allow_update      => $domain_params_hash['user_allow_update'],
-    user_allow_delete      => $domain_params_hash['user_allow_delete'],
-    group_tree_dn          => $domain_params_hash['group_tree_dn'],
-    group_filter           => $domain_params_hash['group_filter'],
-    group_objectclass      => $domain_params_hash['group_objectclass'],
-    group_id_attribute     => $domain_params_hash['group_id_attribute'],
-    group_name_attribute   => $domain_params_hash['group_name_attribute'],
-    group_member_attribute => $domain_params_hash['group_member_attribute'],
-    group_desc_attribute   => $domain_params_hash['group_desc_attribute'],
-    group_allow_create     => $domain_params_hash['group_allow_create'],
-    group_allow_update     => $domain_params_hash['group_allow_update'],
-    group_allow_delete     => $domain_params_hash['group_allow_delete'],
-    page_size              => $domain_params_hash['page_size'],
-    chase_referrals        => $domain_params_hash['chase_referrals'],
+    user_filter            => $user_filter,
+    user_objectclass       => $user_objectclass,
+    user_id_attribute      => $user_id_attribute,
+    user_name_attribute    => $user_name_attribute,
+    user_pass_attribute    => $user_pass_attribute,
+    user_enabled_attribute => $user_enabled_attribute,
+    user_enabled_default   => $user_enabled_default,
+    user_enabled_mask      => $user_enabled_mask,
+    user_allow_create      => $user_allow_create,
+    user_allow_update      => $user_allow_update,
+    user_allow_delete      => $user_allow_delete,
+    group_tree_dn          => $group_tree_dn,
+    group_filter           => $group_filter,
+    group_objectclass      => $group_objectclass,
+    group_id_attribute     => $group_id_attribute,
+    group_name_attribute   => $group_name_attribute,
+    group_member_attribute => $group_member_attribute,
+    group_desc_attribute   => $group_desc_attribute,
+    group_allow_create     => $group_allow_create,
+    group_allow_update     => $group_allow_update,
+    group_allow_delete     => $group_allow_delete,
+    page_size              => $page_size,
+    chase_referrals        => $chase_referrals,
   }
 
 }

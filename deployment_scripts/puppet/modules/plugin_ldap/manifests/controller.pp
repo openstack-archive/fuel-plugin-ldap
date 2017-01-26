@@ -89,12 +89,14 @@ class plugin_ldap::controller {
   #Create domains using info from text area 'List of additional Domains'
   if $additional_domains {
     $domains_list = split($additional_domains, '^$')
-    plugin_ldap::multiple_domain { $domains_list:
+    $domains_hash = make_hash_from_domains_list($domains_list)
+    $domain_defaults = {
       identity_driver       => $identity_driver,
-      ldap_proxy            => $ldap_proxy,
+      ldap_proxy_default    => $ldap_proxy,
       management_vip        => $management_vip,
       slapd_config_template => $proxy_data[1],
     }
+    create_resources(plugin_ldap::multiple_domain, $domains_hash, $domain_defaults)
   }
 
   file { '/etc/keystone/domains':
