@@ -1,6 +1,6 @@
 name: ldap
 title: LDAP plugin for Keystone
-version: '3.0.1'
+version: '3.0.2'
 description: Enable to use LDAP authentication backend for Keystone
 fuel_version: ['9.0']
 licenses: ['Apache License Version 2.0']

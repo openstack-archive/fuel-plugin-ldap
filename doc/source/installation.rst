@@ -15,12 +15,12 @@ To install LDAP plugin, follow these steps:
    that). If you do not have the Fuel Master node yet, see `Quick Start Guide
    <http://docs.openstack.org/developer/fuel-docs/userdocs/fuel-install-guide/install/install_install_fuel_master_node.html>`_::
 
-   # scp ldap-3.0-3.0.1-1.noarch.rpm root@<Fuel_Master_IP>:/tmp
+   # scp ldap-3.0-3.0.2-1.noarch.rpm root@<Fuel_Master_IP>:/tmp
 
 #. Log into the Fuel Master node. Install the plugin::
 
    # cd /tmp
-   # fuel plugins --install ldap-3.0-3.0.1-1.noarch.rpm
+   # fuel plugins --install ldap-3.0-3.0.2-1.noarch.rpm
 
 #. Check if the plugin was installed successfully
 
@@ -29,4 +29,4 @@ To install LDAP plugin, follow these steps:
         # fuel plugins
         id | name | version | package_version | releases
         ---+------+---------+-----------------+--------------------
-        1  | ldap | 3.0.1   | 3.0.0           | ubuntu (mitaka-9.0)
+        1  | ldap | 3.0.2   | 3.0.0           | ubuntu (mitaka-9.0)

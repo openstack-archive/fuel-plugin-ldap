@@ -9,10 +9,10 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 project = u'The LDAP plugin for Fuel'
-copyright = u'2016, Mirantis Inc.'
+copyright = u'2017, Mirantis Inc.'
 
-version = '3.0-3.0.1-1'
-release = '3.0-3.0.1-1'
+version = '3.0-3.0.2-1'
+release = '3.0-3.0.2-1'
 
 exclude_patterns = []
 
